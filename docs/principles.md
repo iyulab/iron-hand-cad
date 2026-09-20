@@ -14,13 +14,13 @@ An operation that cannot be carried out exactly — the reference does not resol
 
 Every operation returns a new model state. The original model, and any file it came from, are untouched. The library has no file-writing path.
 
-What changed between the old and the new state is established by a numeric diff (see [iron-scout-cad](https://github.com/iyulab/iron-scout-cad)), not by this library describing its own work.
+What changed between the old and the new state is established by a numeric diff (see [iron-diff-cad](https://github.com/iyulab/iron-diff-cad)), not by this library describing its own work.
 
 *What this costs:* callers that want a modified file must serialize the new state themselves.
 
 ## 3. Provenance and confidence travel with every entity
 
-The entity model carries, for every entity: a **reference ID**, a **provenance**, and a **confidence** (including "unknown").
+The [uncad-model](https://github.com/iyulab/uncad-model) entity model carries, for every entity: a **reference ID**, a **provenance**, and a **confidence** (including "unknown").
 
 - Entities produced by an operation are marked as such in their provenance.
 - Confidence never rises on its own. An entity derived from a low-confidence entity is not more trustworthy than its source.

@@ -9,7 +9,7 @@ Built as a tool to be handed to an agent. It contains no AI and no UI of its own
 - **Operate** — apply a geometric edit (for example, change a hole diameter) to the entity a reference points at.
 - **Return a new state** — the input model is never modified; the result is a new model state, ready to be diffed against the old one.
 
-References come from [iron-scout-cad](https://github.com/iyulab/iron-scout-cad), which also produces the numeric diff used to verify an edit.
+References come from [iron-scout-cad](https://github.com/iyulab/iron-scout-cad). Whether an edit did what was intended is established by [iron-diff-cad](https://github.com/iyulab/iron-diff-cad). Models are expressed in [uncad-model](https://github.com/iyulab/uncad-model).
 
 ## What it is not
 
