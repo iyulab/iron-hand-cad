@@ -21,7 +21,15 @@ References come from [iron-scout-cad](https://github.com/iyulab/iron-scout-cad).
 
 ## Status
 
-Pre-implementation. No code yet. The design principles are settled and documented in [docs/principles.md](docs/principles.md); read that before proposing anything.
+0.x. One verb, `set(&db, target, path, value)`: the drawing with exactly that field of exactly that entity changed, or a `Refusal` that names why not. Fields are named the way the model's JSON form names them (`radius`, `center.x`, `common.layer`), which is also the vocabulary the diff reports changed fields in -- the edit and its verification speak one language. The rules are in [docs/principles.md](docs/principles.md); the verb set is [docs/verbs.md](docs/verbs.md). Read both before proposing anything.
+
+```rust
+let before: uncad_model::CadDatabase = /* from a parser, or from its JSON */;
+let hole = /* an entity reference, from iron-scout-cad */;
+let after = iron_hand_cad::set(&before, hole, "radius", serde_json::json!(6.0))?;
+let set = iron_diff_cad::diff(&before, &after, iron_diff_cad::DiffOptions::default());
+// exactly one MODIFIED entry, exactly one field: `radius`, delta 1.0
+```
 
 ## License
 
