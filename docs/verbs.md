@@ -37,4 +37,5 @@ Each refusal is a `Refusal` value that names its reason; an edit is never carrie
 ### What it does not do
 
 - It does not mark the edited entity as derived. The entity keeps its reference ID, provenance and source handle: it still came from where it came from, and *what changed* is the diff's statement, not this library's. An entity this library *creates* (there is no such verb yet) would carry `DERIVED` provenance and a fresh reference ID.
+- It edits definitions, not instances. An entity that lives in a block definition is drawn once per reference to that block; setting a field of it changes every one of those places. The chain of references a hit was reached through (a `via` list from [iron-scout-cad](https://github.com/iyulab/iron-scout-cad)) says where the entity was seen, not which instance to edit -- there is no per-instance edit.
 - It does not keep dependent geometry consistent. Setting a dimension's definition point does not move the dimension's text; a chain of edits is a sequence of `set` calls, each verified by its own diff.
