@@ -41,6 +41,34 @@ pub enum Refusal {
     Invalid { path: String, detail: String },
 }
 
+impl std::fmt::Display for Refusal {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Refusal::NoSuchEntity { id } => write!(f, "no entity carries the reference {id:?}"),
+            Refusal::InconsistentCopies { id } => write!(
+                f,
+                "the drawing lists entity {id:?} more than once and the copies disagree"
+            ),
+            Refusal::MalformedPath { path } => write!(f, "malformed field path {path:?}"),
+            Refusal::NoSuchField {
+                entity_type, path, ..
+            } => write!(f, "{entity_type} has no field at {path:?}"),
+            Refusal::NotEditable { path, why } => write!(f, "{path:?} is not editable: {why}"),
+            Refusal::WrongKind {
+                path,
+                expected,
+                given,
+            } => write!(f, "{path:?} holds a {expected}, not a {given}"),
+            Refusal::Constraint { path, rule } => write!(f, "{path:?}: {rule}"),
+            Refusal::Invalid { path, detail } => {
+                write!(f, "with {path:?} set, the entity is not valid: {detail}")
+            }
+        }
+    }
+}
+
+impl std::error::Error for Refusal {}
+
 /// Fields of `common` that say what an entity *is* and where it came from,
 /// not what it looks like. An edit never touches them: the reference ID is
 /// what the diff pairs the two states by, and the provenance markers are

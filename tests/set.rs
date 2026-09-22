@@ -283,3 +283,46 @@ fn a_refusal_serializes_with_its_reason_as_the_tag() {
         json!({"reason": "WRONG_KIND", "path": "radius", "expected": "number", "given": "string"})
     );
 }
+
+#[test]
+fn a_chain_of_edits_is_verified_by_one_diff_listing_every_field() {
+    // Two edits to one entity, then one to another: the diff of the first and
+    // last states lists exactly those three fields on exactly those two
+    // entities, in the contract's order. The chain is the caller's; each
+    // step is a plain `set`.
+    let before = g1();
+    let holes = holes(&before);
+    let step1 = set(&before, holes[0], "radius", json!(6.0)).unwrap();
+    let step2 = set(&step1, holes[0], "center.x", json!(22.0)).unwrap();
+    let after = set(&step2, holes[1], "radius", json!(4.0)).unwrap();
+
+    let set = diff(&before, &after, DiffOptions::default());
+    assert_eq!(set.changes.len(), 2, "{:?}", set.changes);
+    let modified: Vec<&iron_diff_cad::Modified> = set
+        .changes
+        .iter()
+        .map(|c| match c {
+            Change::Modified(m) => m,
+            other => panic!("expected MODIFIED, got {other:?}"),
+        })
+        .collect();
+    assert_eq!(modified[0].id, holes[0]);
+    let paths: Vec<&str> = modified[0].fields.iter().map(|f| f.path.as_str()).collect();
+    assert_eq!(paths, ["center.x", "radius"]);
+    assert_eq!(modified[1].id, holes[1]);
+    assert_eq!(modified[1].fields.len(), 1);
+    assert_eq!(modified[1].fields[0].path, "radius");
+    // Each intermediate state is untouched by the later steps.
+    assert_eq!(the_only_modified(&before, &step1).fields[0].path, "radius");
+}
+
+#[test]
+fn a_refusal_is_an_error_with_a_readable_message() {
+    let before = g1();
+    let hole = holes(&before)[0];
+    let err: Box<dyn std::error::Error> =
+        set(&before, hole, "radius", json!(0.0)).unwrap_err().into();
+    assert_eq!(err.to_string(), "\"radius\": radius must be positive");
+    let err = set(&before, hole, "diameter", json!(1.0)).unwrap_err();
+    assert_eq!(err.to_string(), "CIRCLE has no field at \"diameter\"");
+}
