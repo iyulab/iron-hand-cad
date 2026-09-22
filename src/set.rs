@@ -99,7 +99,10 @@ pub fn set(
     })?;
     guard_editable(path, &segments)?;
 
-    let copies: Vec<&Entity> = entities(db).filter(|e| e.common().id == target).collect();
+    let copies: Vec<&Entity> = db
+        .all_entities()
+        .filter(|e| e.common().id == target)
+        .collect();
     let Some(first) = copies.first() else {
         return Err(Refusal::NoSuchEntity { id: target });
     };
@@ -138,7 +141,7 @@ pub fn set(
     })?;
 
     let mut out = db.clone();
-    for e in entities_mut(&mut out) {
+    for e in out.all_entities_mut() {
         if e.common().id == target {
             *e = edited.clone();
         }
@@ -176,23 +179,4 @@ fn kind(v: &Value) -> &'static str {
         Value::Array(_) => "array",
         Value::Object(_) => "object",
     }
-}
-
-/// Every entity of the drawing: the top level and every block record.
-fn entities(db: &CadDatabase) -> impl Iterator<Item = &Entity> {
-    db.entities.iter().chain(
-        db.tables
-            .block_records
-            .values()
-            .flat_map(|b| b.entities.iter()),
-    )
-}
-
-fn entities_mut(db: &mut CadDatabase) -> impl Iterator<Item = &mut Entity> {
-    db.entities.iter_mut().chain(
-        db.tables
-            .block_records
-            .values_mut()
-            .flat_map(|b| b.entities.iter_mut()),
-    )
 }
