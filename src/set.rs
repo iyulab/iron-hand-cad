@@ -83,7 +83,7 @@ const POSITIVE: [&str; 2] = ["radius", "text_height"];
 /// `value`, and nothing else changed. `db` is not modified.
 ///
 /// `path` names the field the way the model's JSON form does (`radius`,
-/// `center.x`, `vertices[2].y`, `common.layer`); `value` is the new value in
+/// `center.x`, `vertices[2].point.y`, `common.layer`); `value` is the new value in
 /// that same form. The field must exist and the value must be of its kind;
 /// the type tag and the `common` identity and provenance fields (`id`,
 /// `origin`, `confidence`, `source_handle`) are never editable. `radius`

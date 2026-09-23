@@ -1,5 +1,5 @@
 //! Field paths in the model's JSON form: `radius`, `center.x`,
-//! `vertices[2].y`, `common.layer.data`. A path names a node of an entity's
+//! `vertices[2].point.y`, `common.layer.data`. A path names a node of an entity's
 //! JSON tree; segments are object keys separated by `.`, each optionally
 //! followed by one or more `[n]` array indices.
 

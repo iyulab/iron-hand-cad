@@ -12,7 +12,7 @@
 //! work. The same input gives the same output, byte for byte.
 //!
 //! Fields are named the way the model's JSON form names them (`radius`,
-//! `center.x`, `vertices[2].y`, `common.layer`), which is also the way the
+//! `center.x`, `vertices[2].point.y`, `common.layer`), which is also the way the
 //! diff names the fields it reports: the edit and its verification speak
 //! one vocabulary. The verb set of this crate is in `docs/verbs.md`.
 

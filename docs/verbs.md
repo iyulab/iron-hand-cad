@@ -16,7 +16,7 @@ The drawing with the field at `path` of the entity `target` set to `value`, and 
 | Parameter | What it is |
 |---|---|
 | `target` | An entity reference, as [iron-scout-cad](https://github.com/iyulab/iron-scout-cad) issues them. Every copy of the entity in the drawing is edited (model space lists its entities both at the top level and in its block record), so the new state is consistent |
-| `path` | The field, named the way the model's JSON form names it: `radius`, `center.x`, `vertices[2].y`, `common.layer`. This is the same vocabulary [iron-diff-cad](https://github.com/iyulab/iron-diff-cad) reports changed fields in, so the path given to `set` is the path the diff reports back |
+| `path` | The field, named the way the model's JSON form names it: `radius`, `center.x`, `vertices[2].point.y`, `vertices[2].bulge`, `common.layer`. This is the same vocabulary [iron-diff-cad](https://github.com/iyulab/iron-diff-cad) reports changed fields in, so the path given to `set` is the path the diff reports back |
 | `value` | The new value, in the model's JSON form. It must be of the kind the field holds (a number for a number, an object for a point); a field that is currently `null` accepts any kind and is then checked by the model's own type |
 
 ### What is refused
