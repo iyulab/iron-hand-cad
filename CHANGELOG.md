@@ -12,6 +12,8 @@ bumps the minor version.
 - **Breaking:** Built on the current `uncad-model` API. Field paths follow its JSON form, in
   which a polyline vertex is a point and a bulge: pass `vertices[i].point.x` (and
   `vertices[i].bulge`) to `set` where `vertices[i].x` was passed before.
+- **Breaking:** `Refusal` is `#[non_exhaustive]`, so that a later version can name a new
+  reason without breaking callers. A `match` on it needs a wildcard arm.
 
 ## [0.1.0] - 2026-09-22
 

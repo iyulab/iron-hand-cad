@@ -10,6 +10,7 @@ use uncad_model::CadDatabase;
 /// none is a partial success.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "reason", rename_all = "SCREAMING_SNAKE_CASE")]
+#[non_exhaustive]
 pub enum Refusal {
     /// No entity of the drawing carries this reference.
     NoSuchEntity { id: EntityId },
