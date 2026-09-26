@@ -326,3 +326,50 @@ fn a_refusal_is_an_error_with_a_readable_message() {
     let err = set(&before, hole, "diameter", json!(1.0)).unwrap_err();
     assert_eq!(err.to_string(), "CIRCLE has no field at \"diameter\"");
 }
+
+/// Model space is listed twice (the top level and its block record); when
+/// the two copies of the target disagree the drawing contradicts itself,
+/// and editing one copy, or both to one value, would pick a side. The edit
+/// is refused and the drawing is returned to nobody changed.
+#[test]
+fn copies_that_disagree_are_refused_not_reconciled() {
+    let mut before = g1();
+    let hole = holes(&before)[0];
+    let block_copy = before
+        .tables
+        .block_records
+        .values_mut()
+        .flat_map(|b| b.entities.iter_mut())
+        .find(|e| e.common().id == hole)
+        .expect("G1 lists model space in its block record too");
+    let Entity::Circle(circle) = block_copy else {
+        panic!("a hole")
+    };
+    circle.radius += 1.0;
+    let untouched = before.clone();
+
+    let refusal = set(&before, hole, "center.x", json!(0.0)).unwrap_err();
+    assert_eq!(refusal, Refusal::InconsistentCopies { id: hole });
+    assert_eq!(before, untouched);
+
+    // Only the target's copies are compared: another entity still edits.
+    let other = holes(&before)[1];
+    assert!(set(&before, other, "radius", json!(6.0)).is_ok());
+}
+
+/// An edit changes an entity that is there; it never makes one. On a
+/// drawing with no entities every target is absent, and the answer is the
+/// refusal, not a drawing with something new in it.
+#[test]
+fn a_drawing_with_no_entities_gets_a_refusal_not_a_new_entity() {
+    let mut empty = g1();
+    let hole = holes(&empty)[0];
+    empty.entities.clear();
+    for block in empty.tables.block_records.values_mut() {
+        block.entities.clear();
+    }
+    assert_eq!(
+        set(&empty, hole, "radius", json!(6.0)).unwrap_err(),
+        Refusal::NoSuchEntity { id: hole }
+    );
+}
