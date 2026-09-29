@@ -7,6 +7,8 @@ bumps the minor version.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-29
+
 ### Changed
 
 - **Breaking:** Built on the current `uncad-model` API. Field paths follow its JSON form, in
