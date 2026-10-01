@@ -7,6 +7,13 @@ bumps the minor version.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-02
+
+### Changed
+
+- Built on `uncad-model` 0.3.0 (a drawing's `header`; a multileader's leader roots), so
+  it edits drawings of that model; its tests check edits with `iron-diff-cad` 0.3.0.
+
 ## [0.2.0] - 2026-09-29
 
 ### Changed
