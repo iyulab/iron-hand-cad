@@ -29,9 +29,18 @@ fn holes(db: &CadDatabase) -> Vec<EntityId> {
         .collect()
 }
 
+/// How a change set of this crate's own edit is computed: the two states
+/// are one drawing, so its entities are paired by reference ID.
+fn an_edit() -> DiffOptions {
+    DiffOptions {
+        matching: Matching::Reference,
+        ..DiffOptions::default()
+    }
+}
+
 /// The one MODIFIED entry of a change set that holds nothing else.
 fn the_only_modified(before: &CadDatabase, after: &CadDatabase) -> iron_diff_cad::Modified {
-    let set = diff(before, after, DiffOptions::default());
+    let set = diff(before, after, an_edit());
     assert_eq!(set.matching, Matching::Reference);
     assert_eq!(set.changes.len(), 1, "{:?}", set.changes);
     match &set.changes[0] {
@@ -296,7 +305,7 @@ fn a_chain_of_edits_is_verified_by_one_diff_listing_every_field() {
     let step2 = set(&step1, holes[0], "center.x", json!(22.0)).unwrap();
     let after = set(&step2, holes[1], "radius", json!(4.0)).unwrap();
 
-    let set = diff(&before, &after, DiffOptions::default());
+    let set = diff(&before, &after, an_edit());
     assert_eq!(set.changes.len(), 2, "{:?}", set.changes);
     let modified: Vec<&iron_diff_cad::Modified> = set
         .changes
