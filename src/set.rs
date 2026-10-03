@@ -157,18 +157,30 @@ fn guard_editable(path: &str, segments: &[Segment]) -> Result<(), Refusal> {
             why: why.to_string(),
         })
     };
-    match segments {
-        [Segment::Key(k)] if k == "type" => refuse("the type tag says what the entity is"),
-        [Segment::Key(k)] if k == "common" => {
-            refuse("`common` as a whole carries the identity and provenance markers")
+    if let [Segment::Key(k)] = segments {
+        if k == "type" {
+            return refuse("the type tag says what the entity is");
         }
-        [Segment::Key(c), Segment::Key(k), ..]
-            if c == "common" && PROTECTED_COMMON.contains(&k.as_str()) =>
-        {
-            refuse("identity and provenance are the source's statement, not the editor's")
-        }
-        _ => Ok(()),
     }
+    // A `common` block anywhere in the path: the entity's own, or a nested
+    // entity's (an INSERT's attributes), which carries the same markers.
+    for (i, segment) in segments.iter().enumerate() {
+        if !matches!(segment, Segment::Key(c) if c == "common") {
+            continue;
+        }
+        match segments.get(i + 1) {
+            None => {
+                return refuse("`common` as a whole carries the identity and provenance markers")
+            }
+            Some(Segment::Key(k)) if PROTECTED_COMMON.contains(&k.as_str()) => {
+                return refuse(
+                    "identity and provenance are the source's statement, not the editor's",
+                )
+            }
+            _ => {}
+        }
+    }
+    Ok(())
 }
 
 fn kind(v: &Value) -> &'static str {

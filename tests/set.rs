@@ -280,6 +280,37 @@ fn refusals_name_their_reason_and_change_nothing() {
         set(&before, text, "text_height", json!(0.0)),
         Err(Refusal::Constraint { .. })
     ));
+    // The INSERT carries its attributes nested, each with its own `common`
+    // block: those markers are as protected as the INSERT's own, while the
+    // rest of a nested `common` (the layer) stays editable.
+    let insert = before
+        .entities
+        .iter()
+        .find_map(|e| match e {
+            Entity::Insert(i) if !i.attribs.is_empty() => Some(i.common.id),
+            _ => None,
+        })
+        .expect("G1's title block is an INSERT with attributes");
+    for path in [
+        "attribs[0].common",
+        "attribs[0].common.id",
+        "attribs[0].common.origin",
+        "attribs[0].common.confidence",
+        "attribs[0].common.source_handle",
+        "attribs[0].common.source_handle.data",
+    ] {
+        match set(&before, insert, path, json!(1)) {
+            Err(Refusal::NotEditable { path: p, .. }) => assert_eq!(p, path),
+            other => panic!("{path}: expected NOT_EDITABLE, got {other:?}"),
+        }
+    }
+    assert!(set(
+        &before,
+        insert,
+        "attribs[0].common.layer",
+        json!({"type": "RESOLVED", "data": "NOTES"})
+    )
+    .is_ok());
 }
 
 #[test]
