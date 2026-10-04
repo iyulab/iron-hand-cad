@@ -7,6 +7,14 @@ bumps the minor version.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-04
+
+### Changed
+
+- Built on `uncad-model` 0.4.0 (a multileader's line type and content; the header's drawing
+  identifiers), so it edits drawings of that model; its tests check edits with `iron-diff-cad`
+  0.4.0.
+
 ### Fixed
 
 - `set` refuses `id`, `origin`, `confidence` and `source_handle` in a nested entity's `common`
