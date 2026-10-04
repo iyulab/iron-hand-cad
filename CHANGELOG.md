@@ -7,6 +7,12 @@ bumps the minor version.
 
 ## [Unreleased]
 
+### Fixed
+
+- `set` refuses `id`, `origin`, `confidence` and `source_handle` in a nested entity's `common`
+  block too (an INSERT's attributes), not only in the entity's own: an edit could rewrite an
+  attribute's reference ID, a field a diff does not compare, so the edit went unseen.
+
 ## [0.3.0] - 2026-10-02
 
 ### Changed
