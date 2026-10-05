@@ -7,6 +7,15 @@ bumps the minor version.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-05
+
+### Changed
+
+- Built on `uncad-model` 0.5.0: a table's cells are fields like any other
+  (`grid.rows[r].cells[c].text`); as with a dimension, setting one does not redraw what the
+  table's block draws.
+- Built on `iron-diff-cad` 0.5.0.
+
 ## [0.4.0] - 2026-10-04
 
 ### Changed
