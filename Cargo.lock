@@ -4,9 +4,9 @@ version = 4
 
 [[package]]
 name = "iron-diff-cad"
-version = "0.9.0"
+version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c906f9cfd93b3d554e1eef64c69e2d1782417b13958b764736c929289b55bb10"
+checksum = "9e3cf1ef1dee082ed9fe5b01ce32235a60e97aeedb96698a25a4285b4234fe2e"
 dependencies = [
  "serde",
  "serde_json",
