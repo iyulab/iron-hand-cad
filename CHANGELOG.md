@@ -7,6 +7,14 @@ bumps the minor version.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-02
+
+### Changed
+
+- Built on `iron-diff-cad` 0.13.0 and `uncad-model` 0.11.0. The model's types (`CadDatabase`, the entities)
+  are part of this crate's interface, so a program that uses this crate with `uncad-model` moves both to the new
+  version together; nothing else in the crate changes.
+
 ## [0.10.0] - 2026-10-30
 
 ### Changed
