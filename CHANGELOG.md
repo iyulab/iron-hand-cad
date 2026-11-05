@@ -7,6 +7,8 @@ bumps the minor version.
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-11-05
+
 ### Changed
 
 - **Breaking:** entity IDs are decimal strings in the models this crate reads and writes and in the
@@ -14,6 +16,8 @@ bumps the minor version.
   this crate's interface (`NoSuchEntity`, `InconsistentCopies` and the targets of an edit carry one), so a
   program that uses this crate with `uncad-model` moves both to the new version together; a consumer that
   parsed an ID as a number reads it as text instead.
+
+- Built on `iron-diff-cad` 0.14.0 and `uncad-model` 0.12.0.
 
 ## [0.11.0] - 2026-11-02
 
