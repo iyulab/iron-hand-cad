@@ -7,6 +7,14 @@ bumps the minor version.
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** entity IDs are decimal strings in the models this crate reads and writes and in the
+  changes its verbs report (`"id": "42"`, not a number), following `uncad-model`. `EntityId` is part of
+  this crate's interface (`NoSuchEntity`, `InconsistentCopies` and the targets of an edit carry one), so a
+  program that uses this crate with `uncad-model` moves both to the new version together; a consumer that
+  parsed an ID as a number reads it as text instead.
+
 ## [0.11.0] - 2026-11-02
 
 ### Changed
