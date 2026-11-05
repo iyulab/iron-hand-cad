@@ -38,3 +38,6 @@ serde_json = { version = "1.0.151", features = ["float_roundtrip"] }
 # Whether an edit did exactly what was asked is established by the numeric
 # diff, so the acceptance tests run it. A version dependency, never a path.
 iron-diff-cad = "0.14.0"
+# The ends a reading names are the ends an edit moves, so the end-to-end test
+# asks `iron-scout-cad` which ends sit together. A version dependency, never a path.
+iron-scout-cad = "0.16.0"

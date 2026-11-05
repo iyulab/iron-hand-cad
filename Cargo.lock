@@ -18,8 +18,19 @@ name = "iron-hand-cad"
 version = "0.12.0"
 dependencies = [
  "iron-diff-cad",
+ "iron-scout-cad",
  "serde",
  "serde_json",
+ "uncad-model",
+]
+
+[[package]]
+name = "iron-scout-cad"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f357881fff305c3b9eb161975c0bd4c032ed041760d2f98be49d61866c6424a8"
+dependencies = [
+ "serde",
  "uncad-model",
 ]
 
